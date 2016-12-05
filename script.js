@@ -53,9 +53,13 @@ var heightSMDownRight = SMDownRight.naturalHeight;
 var jumpAudio = new Audio("sound/jump.mp3");
 var jumpAudioIsPlayedOnce;
 
-//gunshotAudio
-var gunshotAudio = new Audio("sound/gunshot.mp3");
-var gunshotAudioIsPlayedOnce;
+//gunshotAudioP1
+var gunshotAudioP1 = new Audio("sound/gunshot.mp3");
+var gunshotAudioP1IsPlayedOnce;
+
+//gunshotAudioP2
+var gunshotAudioP2 = new Audio("sound/gunshot.mp3");
+var gunshotAudioP2IsPlayedOnce;
 
 //deathAudio
 var deathAudio = new Audio("sound/pain.mp3");
@@ -258,8 +262,10 @@ function resetGame(){
     shootBtnIsActiveP2 = true;
     jumpingP1 = false;
     jumpingP2 = false;
+    map = {};
     deathAudioIsPlayedOnce = false;
     fallAudioIsPlayedOnce = false;
+
 
     if(showingWinScreen)
     {
@@ -392,7 +398,7 @@ function checkCommand(evt){
                 stickMan1.shoot(bulletP1);
                 shootingP1 = true;
                 console.log("Active");
-                gunshotAudioIsPlayedOnce = false;
+                gunshotAudioP1IsPlayedOnce = false;
             }
             else
             {
@@ -442,7 +448,7 @@ function checkCommand(evt){
                 stickMan2.shoot(bulletP2);
                 shootingP2 = true;
                 console.log("Active");
-                gunshotAudioIsPlayedOnce = false;
+                gunshotAudioP2IsPlayedOnce = false;
             }
             else{
                 console.log("Inactive"); 
@@ -498,10 +504,6 @@ var StickMan = {
         //console.log(widthSMLeft + ',' + heightSMLeft);
         //console.log(widthSMRight + ',' + heightSMRight);
 
-
-        this.width = this.img.naturalWidth;
-        this.height = this.img.naturalHeight;
-        //this.y = canvas.height-this.height;
 	    canvasContext.drawImage(img, this.x,this.y);
     },
 
@@ -512,7 +514,10 @@ var StickMan = {
 
     goLeft:function(){
         this.img = SMRight;
-        //this.drawPicture(this.img);
+        this.width = widthSMRight;
+        this.height = heightSMRight;
+        this.y = canvas.height-this.height;
+        
         this.x -= this.xSpeed;
         if(this.x < 0-this.width)
         {
@@ -523,7 +528,10 @@ var StickMan = {
     goRight:function(){
         
         this.img = SMLeft;
-        //this.drawPicture(this.img);
+        this.width = widthSMLeft;
+        this.height = heightSMLeft;
+        this.y = canvas.height-this.height;
+        
         this.x += this.xSpeed;
                 
         if(this.x > canvas.width)
@@ -536,15 +544,16 @@ var StickMan = {
         if(this.img == SMLeft){
 
             this.img = SMDownLeft;
-            //this.width = widthSMDownLeft;
-            //this.height = heightSMDownLeft;
+            this.width = widthSMDownLeft;
+            this.height = heightSMDownLeft;
             this.y = canvas.height-this.height;
+
 
         }else if(this.img == SMRight)
         {
             this.img = SMDownRight;
-            //this.width = widthSMDownRight;
-            //this.height = heightSMDownRight;
+            this.width = widthSMDownRight;
+            this.height = heightSMDownRight;
             this.y = canvas.height-this.height;
         }
     },
@@ -561,11 +570,22 @@ var StickMan = {
             bullet.init(this.numPlayer,this.x, this.y+(this.height*(2*1/7)),'l',BulletRight,widthBulletRight,heightBulletRight);
         }
 
-        if(!gunshotAudioIsPlayedOnce)
+        if(this.numPlayer == 1)
         {
-            gunshotAudio.play();
-            gunshotAudioIsPlayedOnce = true;
+            if(!gunshotAudioP1IsPlayedOnce)
+            {
+                gunshotAudioP1.play();
+                gunshotAudioP1IsPlayedOnce = true;
+            }
+        }else if(this.numPlayer == 2)
+        {
+             if(!gunshotAudioP2IsPlayedOnce)
+            {
+                gunshotAudioP2.play();
+                gunshotAudioP2IsPlayedOnce = true;
+            }
         }
+        
     },
 
     //improve
