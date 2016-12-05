@@ -1,0 +1,11 @@
+html {
+  height: 100%;
+}
+
+#gameCanvas{
+	display:block;
+	margin:0 auto;
+	background-image: url("img/paper_background.jpg");
+	
+	
+}
