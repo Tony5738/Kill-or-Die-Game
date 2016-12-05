@@ -49,9 +49,13 @@ var heightSMDownRight = SMDownRight.naturalHeight;
 
 
 
-//jumpAudio
-var jumpAudio = new Audio("sound/jump.mp3");
-var jumpAudioIsPlayedOnce;
+//jumpAudioP1
+var jumpAudioP1 = new Audio("sound/jump.mp3");
+var jumpAudioP1IsPlayedOnce;
+
+//jumpAudioP2
+var jumpAudioP2 = new Audio("sound/jump.mp3");
+var jumpAudioP2IsPlayedOnce;
 
 //gunshotAudioP1
 var gunshotAudioP1 = new Audio("sound/gunshot.mp3");
@@ -90,6 +94,10 @@ var jumpingP2 = false;
 const GRAVITY = 9.81;
 const SM_LEGS_FORCE = -50;
 
+//down variables
+var isDownP1 = false;
+var isDownP2 = false;
+
 
 //bullet variables
 var bulletP1
@@ -118,7 +126,9 @@ var showingStartScreen = true;
 window.addEventListener('load', function () {
 
     canvas = document.getElementById('gameCanvas');
-    canvasContext = canvas.getContext('2d');  
+    canvasContext = canvas.getContext('2d'); 
+    
+
 	
 	drawStartGameScreen();
 
@@ -167,7 +177,7 @@ window.addEventListener('load', function () {
                 stickMan2.jump();
             }
 
-            //improve
+           
             //shoot
             if(shootingP1)
             { 
@@ -262,6 +272,8 @@ function resetGame(){
     shootBtnIsActiveP2 = true;
     jumpingP1 = false;
     jumpingP2 = false;
+    isDownP1 = false;
+    isDownP2 = false;
     map = {};
     deathAudioIsPlayedOnce = false;
     fallAudioIsPlayedOnce = false;
@@ -307,14 +319,14 @@ function checkCommand(evt){
             {
                 stickMan1.jumpSpeed = SM_LEGS_FORCE;
                 jumpingP1 = true; 
-                jumpAudioIsPlayedOnce = false; 
+                jumpAudioP1IsPlayedOnce = false; 
             }
 
             if(stickMan2.y+stickMan2.height == canvas.height)
             {
                 stickMan2.jumpSpeed = SM_LEGS_FORCE;
                 jumpingP2 = true;
-                jumpAudioIsPlayedOnce = false; 
+                jumpAudioP2IsPlayedOnce = false; 
             }
         }
         //s + left arrow
@@ -336,7 +348,9 @@ function checkCommand(evt){
         {
             console.log("Players go down");
             stickMan1.goDown();
+            isDownP1 = true;
             stickMan2.goDown();
+            isDownP2 = true;
             
         }
         //s + right arrow
@@ -366,7 +380,7 @@ function checkCommand(evt){
 
                 stickMan1.jumpSpeed = SM_LEGS_FORCE;
                 jumpingP1 = true;
-                jumpAudioIsPlayedOnce = false; 
+                jumpAudioP1IsPlayedOnce = false; 
             }
             
         }
@@ -382,6 +396,7 @@ function checkCommand(evt){
         {
             console.log("Player 1 goes down");
             stickMan1.goDown();
+            isDownP1 = true;
         }
         //f
         else if (key == 70)
@@ -393,7 +408,7 @@ function checkCommand(evt){
         else if (key == 32)
         {
             console.log("Player 1 shoots");
-            if(shootBtnIsActiveP1)
+            if(shootBtnIsActiveP1 && !isDownP1)
             {
                 stickMan1.shoot(bulletP1);
                 shootingP1 = true;
@@ -417,7 +432,7 @@ function checkCommand(evt){
             {
                 stickMan2.jumpSpeed = SM_LEGS_FORCE;
                 jumpingP2 = true;
-                jumpAudioIsPlayedOnce = false;
+                jumpAudioP2IsPlayedOnce = false;
                  
             }
         }
@@ -438,12 +453,13 @@ function checkCommand(evt){
         {
             console.log("Player 2 goes down");
             stickMan2.goDown();
+            isDownP2 = true;
         }
         //0
         else if (key == 96)
         {
             console.log("Player 2 shoots");
-            if(shootBtnIsActiveP2)
+            if(shootBtnIsActiveP2 && !isDownP2)
             {
                 stickMan2.shoot(bulletP2);
                 shootingP2 = true;
@@ -523,6 +539,14 @@ var StickMan = {
         {
             this.x= canvas.width;
         }
+
+        if(this.numPlayer == 1)
+        {
+            isDownP1 =false;
+        }else if(this.numPlayer == 2)
+        {
+            isDownP2 = false;
+        }
     },
 
     goRight:function(){
@@ -538,6 +562,15 @@ var StickMan = {
         {
             this.x = 0-this.width;
         }
+
+        if(this.numPlayer == 1)
+        {
+            isDownP1 =false;
+        }else if(this.numPlayer == 2)
+        {
+            isDownP2 = false;
+        }
+
     },
 
     goDown:function(){
@@ -577,7 +610,8 @@ var StickMan = {
                 gunshotAudioP1.play();
                 gunshotAudioP1IsPlayedOnce = true;
             }
-        }else if(this.numPlayer == 2)
+        }
+        else if(this.numPlayer == 2)
         {
              if(!gunshotAudioP2IsPlayedOnce)
             {
@@ -588,15 +622,26 @@ var StickMan = {
         
     },
 
-    //improve
+    
     jump:function(){
 
-
-        if(!jumpAudioIsPlayedOnce)
-        {   
-            jumpAudio.play();
-            jumpAudioIsPlayedOnce = true;
+        if(this.numPlayer == 1)
+        {
+            if(!jumpAudioP1IsPlayedOnce)
+            {   
+                jumpAudioP1.play();
+                jumpAudioP1IsPlayedOnce = true;
+            } 
         }
+        else if(this.numPlayer == 2)
+        {
+            if(!jumpAudioP2IsPlayedOnce)
+            {   
+                jumpAudioP2.play();
+                jumpAudioP2IsPlayedOnce = true;
+            } 
+        }
+       
         //console.log("jumpSpeed "+this.jumpSpeed);
         //console.log("y "+this.y);
         this.jumpSpeed += GRAVITY;
