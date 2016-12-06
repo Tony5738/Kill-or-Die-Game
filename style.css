@@ -4,18 +4,19 @@ html {
 
 body{
 	margin:0%;
-	background-color: #BBD2E1;
+	background-image: url("img/copybook_paper.jpg");
 }
 
 header{
 	background-image: url("img/paper_background.jpg");
-	
 	padding:1%;
-	margin:0%;
+	max-height: 100px;
+	
 }
 img{
+	
 	display:block;
-	margin:0 auto;
+	margin: auto;
 	
 }
 
@@ -23,27 +24,51 @@ img:hover
 {
 	transform: scale(1.1);
 }
+
 #gameCanvas{
 	display:block;
 	margin:1% auto;
 	background-image: url("img/paper_background.jpg");
 
 
+
 }
 
-#commandTitle{
-	margin:1%
+h2{
+	width:25%;
+	margin:auto;
+	text-align: center;
+
+
 }
 
-div{
+aside{
 	
+	width:50%;
+	max-height: 100px;
 	border-radius: 10px;
 	background-color: white;
-	margin-left:2%;
-	margin-right:2%;
+	margin:auto;
+	overflow:auto;
+	padding:1%;
 }
 
-p{
-	margin:1%;
+div,h2,footer{
+	font-family: Comic Sans MS;
+}
+
+
+
+footer{
+	width:100%;
+	max-height:75px;
+	background-image: url("img/paper_background.jpg");
+	text-align: center;
+	padding:1%;
+	position:fixed;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	
 }
 
